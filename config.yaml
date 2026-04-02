@@ -1,0 +1,97 @@
+# sdrpp-scheduler configuration file
+# ---------------------------------------------------------
+# SDR++ must be running with the RigCtl Server module enabled.
+# In SDR++: Module Manager → Add "Rigctl Server" → Start it.
+# Also enable "Recording" in the Rigctl Server panel and
+# select your Recorder module as the target recorder.
+# ---------------------------------------------------------
+
+sdrpp:
+  host: "localhost"   # SDR++ rigctl server host (default: localhost)
+  port: 4532          # SDR++ rigctl server port (default: 4532)
+  timeout: 5s         # Connection timeout (default: 5s)
+
+schedule:
+  # ----- Blount County ARES Weekly Net -----
+  - name: "Blount County ARES Weekly Net"
+    frequency_hz: 146625000
+    mode: "WFM"                 # Wide FM for APT weather image
+    passband: 0                 # 0 = radio default
+    duration: 30m               # 15-minute pass
+    cron: "0 21 * * 4"          # Every Thursday at 09:00pm
+    enabled: true
+
+  # ----- The Tech Prepper AM -----
+  - name: "The Tech Prepper AM"
+    frequency_hz: 9455000
+    mode: "AM"
+    duration: 60m
+    cron: "0 11 * * 4"          # Every hour on the hour
+    enabled: true
+
+  # ----- NOAA Weather Satellite (WFM) -----
+  - name: "NOAA-15 Pass"
+    frequency_hz: 137620000     # 137.620 MHz
+    mode: "WFM"                 # Wide FM for APT weather image
+    passband: 0                 # 0 = radio default
+    duration: 15m               # 15-minute pass
+    cron: "30 9 * * *"          # Every day at 09:30
+    enabled: false
+
+  # ----- NOAA-18 alternate frequency -----
+  - name: "NOAA-18 Pass"
+    frequency_hz: 137912500     # 137.9125 MHz
+    mode: "WFM"
+    duration: 12m
+    cron: "0 14 * * *"         # Every day at 14:00
+    enabled: false
+
+  # ----- ISS Voice Downlink (FM) -----
+  - name: "ISS Voice"
+    frequency_hz: 145800000     # 145.800 MHz
+    mode: "FM"
+    passband: 15000             # 15 kHz (NFM)
+    duration: 10m
+    cron: "0 10 * * 1,3,5"     # Mon, Wed, Fri at 10:00
+    enabled: false              # Disabled by default
+
+  # ----- Amateur Radio Weekly Net (USB) -----
+  - name: "40m SSB Net"
+    frequency_hz: 7200000       # 7.200 MHz
+    mode: "USB"
+    passband: 2700
+    duration: 1h
+    cron: "0 20 * * 0"         # Every Sunday at 20:00
+    enabled: false
+
+  # ----- Broadcast AM Station -----
+  - name: "Hourly News"
+    frequency_hz: 1000000       # 1.000 MHz AM
+    mode: "AM"
+    duration: 5m
+    cron: "0 * * * *"          # Every hour on the hour
+    enabled: false
+
+  # ----- Example: Every 15 minutes -----
+  - name: "Aviation Weather ATIS"
+    frequency_hz: 127250000     # 127.250 MHz (example)
+    mode: "AM"
+    duration: 3m
+    cron: "*/15 * * * *"       # Every 15 minutes
+    enabled: false
+
+  # ----- Example: Weekday morning recording -----
+  - name: "Morning Commute Traffic"
+    frequency_hz: 162400000     # NOAA Weather Radio 162.400 MHz
+    mode: "WFM"
+    duration: 30m
+    cron: "0 7 * * 1-5"        # Mon-Fri at 07:00
+    enabled: false
+
+  # ----- Example: Weekday morning recording -----
+  - name: "Morning Commute Traffic"
+    frequency_hz: 107700000     # NOAA Weather Radio 162.400 MHz
+    mode: "WFM"
+    duration: 2m
+    cron: "55 17 * * 1-5"        # Mon-Fri at 07:00
+    enabled: false

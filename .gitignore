@@ -1,0 +1,31 @@
+# Compiled binary
+sdrpp-scheduler
+sdrpp-scheduler.exe
+
+# Cross-compiled binaries (e.g. from: GOOS=windows go build)
+*.exe
+
+# Go module download cache and vendor directory
+vendor/
+
+# Test output and coverage
+*.test
+*.out
+coverage.html
+
+# Personal/local config with real schedules and paths
+# Track config.yaml as the example template; use config.local.yaml for your own
+config.local.yaml
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
