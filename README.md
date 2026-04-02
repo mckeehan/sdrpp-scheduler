@@ -20,14 +20,15 @@ Automated scheduled recordings for [SDR++](https://www.sdrpp.org/). Connects to 
 
 ## How it works
 
-SDR++ includes a **RigCtl Server** module that speaks the [Hamlib rigctld](https://hamlib.github.io/) protocol over TCP (port 4532 by default). This program acts as a client, sending three types of commands at the scheduled time:
+SDR++ includes a **RigCtl Server** module that speaks the [Hamlib rigctld](https://hamlib.github.io/) protocol over TCP (port 4532 by default). This program acts as a client, sending four types of commands at the scheduled time:
 
-| Command | What SDR++ does |
-|---|---|
-| `F 137620000` | Tune the VFO to 137.620 MHz |
-| `M WFM 0` | Switch to Wide FM demodulation |
-| `AOS` | Start the Recorder module |
-| `LOS` | Stop the Recorder module |
+ | Command       | What SDR++ does                |
+ | ---           | ---                            |
+ | `F 137620000` | Tune the VFO to 137.620 MHz    |
+ | `M WFM 0`     | Switch to Wide FM demodulation |
+ | \start        | Start "playing"                |
+ | `AOS`         | Start the Recorder module      |
+ | `LOS`         | Stop the Recorder module       |
 
 The scheduler wakes every 10 seconds, checks whether any configured job is due in the current minute, and dispatches it exactly once. Jobs are never overlapped — if a recording is still running when a new one is due, the new one is skipped with a warning.
 
@@ -160,30 +161,30 @@ schedule:
 
 ### Schedule entry fields
 
-| Field | Required | Description |
-|---|---|---|
-| `name` | No | Human-readable label shown in logs. Defaults to `entry-N`. |
-| `frequency_hz` | **Yes** | Frequency to tune to, in Hz (e.g. `137620000` for 137.620 MHz) |
-| `mode` | No | Demodulation mode. Defaults to `FM`. See modes below. |
-| `passband` | No | Filter bandwidth in Hz. `0` uses SDR++'s default for the mode. |
-| `duration` | **Yes** | Recording length as a Go duration string: `5m`, `1h30m`, `90s` |
-| `cron` | **Yes** | 5-field cron expression for when to start. See cron format below. |
-| `enabled` | No | Set to `false` to skip this entry without deleting it. Defaults to `true`. |
+ | Field          | Required | Description                                                                |
+ | ---            | ---      | ---                                                                        |
+ | `name`         | No       | Human-readable label shown in logs. Defaults to `entry-N`.                 |
+ | `frequency_hz` | **Yes**  | Frequency to tune to, in Hz (e.g. `137620000` for 137.620 MHz)             |
+ | `mode`         | No       | Demodulation mode. Defaults to `FM`. See modes below.                      |
+ | `passband`     | No       | Filter bandwidth in Hz. `0` uses SDR++'s default for the mode.             |
+ | `duration`     | **Yes**  | Recording length as a Go duration string: `5m`, `1h30m`, `90s`             |
+ | `cron`         | **Yes**  | 5-field cron expression for when to start. See cron format below.          |
+ | `enabled`      | No       | Set to `false` to skip this entry without deleting it. Defaults to `true`. |
 
 ### Supported modes
 
-| Mode | Description |
-|---|---|
-| `WFM` | Wide FM — broadcast radio, weather satellites (NOAA APT) |
-| `FM` / `NFM` | Narrow FM — voice comms, amateur radio VHF/UHF |
-| `AM` | Amplitude modulation — aviation, HF broadcast |
-| `USB` | Upper sideband — HF amateur, utility |
-| `LSB` | Lower sideband — HF amateur below 10 MHz |
-| `CW` | Continuous wave (Morse), upper sideband |
-| `CWR` | CW, lower sideband |
-| `RTTY` | Radio teletype |
-| `DSB` | Double sideband |
-| `RAW` | Raw IQ passthrough |
+ | Mode         | Description                                              |
+ | ---          | ---                                                      |
+ | `WFM`        | Wide FM — broadcast radio, weather satellites (NOAA APT) |
+ | `FM` / `NFM` | Narrow FM — voice comms, amateur radio VHF/UHF           |
+ | `AM`         | Amplitude modulation — aviation, HF broadcast            |
+ | `USB`        | Upper sideband — HF amateur, utility                     |
+ | `LSB`        | Lower sideband — HF amateur below 10 MHz                 |
+ | `CW`         | Continuous wave (Morse), upper sideband                  |
+ | `CWR`        | CW, lower sideband                                       |
+ | `RTTY`       | Radio teletype                                           |
+ | `DSB`        | Double sideband                                          |
+ | `RAW`        | Raw IQ passthrough                                       |
 
 ### Cron format
 
@@ -191,21 +192,21 @@ Standard 5-field cron: **`minute  hour  day-of-month  month  day-of-week`**
 
 Day-of-week: `0` = Sunday, `1` = Monday … `6` = Saturday.
 
-| Expression | Fires |
-|---|---|
-| `30 9 * * *` | Every day at 09:30 |
-| `0 14 * * *` | Every day at 14:00 |
-| `0 20 * * 0` | Every Sunday at 20:00 |
-| `30 14 * * 1-5` | Monday–Friday at 14:30 |
-| `0 10 * * 1,3,5` | Monday, Wednesday, Friday at 10:00 |
-| `*/15 * * * *` | Every 15 minutes |
-| `0 * * * *` | Every hour on the hour |
-| `0 8 1 * *` | 1st of every month at 08:00 |
-| `0 6 * 6,7,8 *` | Every day in June/July/August at 06:00 |
-| `@hourly` | Alias for `0 * * * *` |
-| `@daily` | Alias for `0 0 * * *` |
-| `@weekly` | Alias for `0 0 * * 0` |
-| `@monthly` | Alias for `0 0 1 * *` |
+ | Expression       | Fires                                  |
+ | ---              | ---                                    |
+ | `30 9 * * *`     | Every day at 09:30                     |
+ | `0 14 * * *`     | Every day at 14:00                     |
+ | `0 20 * * 0`     | Every Sunday at 20:00                  |
+ | `30 14 * * 1-5`  | Monday–Friday at 14:30                 |
+ | `0 10 * * 1,3,5` | Monday, Wednesday, Friday at 10:00     |
+ | `*/15 * * * *`   | Every 15 minutes                       |
+ | `0 * * * *`      | Every hour on the hour                 |
+ | `0 8 1 * *`      | 1st of every month at 08:00            |
+ | `0 6 * 6,7,8 *`  | Every day in June/July/August at 06:00 |
+ | `@hourly`        | Alias for `0 * * * *`                  |
+ | `@daily`         | Alias for `0 0 * * *`                  |
+ | `@weekly`        | Alias for `0 0 * * 0`                  |
+ | `@monthly`       | Alias for `0 0 1 * *`                  |
 
 ---
 
