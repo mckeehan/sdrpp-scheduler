@@ -161,30 +161,30 @@ schedule:
 
 ### Schedule entry fields
 
- | Field          | Required | Description                                                                |
- | ---            | ---      | ---                                                                        |
- | `name`         | No       | Human-readable label shown in logs. Defaults to `entry-N`.                 |
- | `frequency_hz` | **Yes**  | Frequency to tune to, in Hz (e.g. `137620000` for 137.620 MHz)             |
- | `mode`         | No       | Demodulation mode. Defaults to `FM`. See modes below.                      |
- | `passband`     | No       | Filter bandwidth in Hz. `0` uses SDR++'s default for the mode.             |
- | `duration`     | **Yes**  | Recording length as a Go duration string: `5m`, `1h30m`, `90s`             |
- | `cron`         | **Yes**  | 5-field cron expression for when to start. See cron format below.          |
- | `enabled`      | No       | Set to `false` to skip this entry without deleting it. Defaults to `true`. |
+  | Field          | Required | Description                                                                |
+  | ---            | ---      | ---                                                                        |
+  | `name`         | No       | Human-readable label shown in logs. Defaults to `entry-N`.                 |
+  | `frequency_hz` | **Yes**  | Frequency to tune to, in Hz (e.g. `137620000` for 137.620 MHz)             |
+  | `mode`         | No       | Demodulation mode. Defaults to `FM`. See modes below.                      |
+  | `passband`     | No       | Filter bandwidth in Hz. `0` uses SDR++'s default for the mode.             |
+  | `duration`     | **Yes**  | Recording length as a Go duration string: `5m`, `1h30m`, `90s`             |
+  | `cron`         | **Yes**  | 5-field cron expression for when to start. See cron format below.          |
+  | `enabled`      | No       | Set to `false` to skip this entry without deleting it. Defaults to `true`. |
 
 ### Supported modes
 
- | Mode         | Description                                              |
- | ---          | ---                                                      |
- | `WFM`        | Wide FM — broadcast radio, weather satellites (NOAA APT) |
- | `FM` / `NFM` | Narrow FM — voice comms, amateur radio VHF/UHF           |
- | `AM`         | Amplitude modulation — aviation, HF broadcast            |
- | `USB`        | Upper sideband — HF amateur, utility                     |
- | `LSB`        | Lower sideband — HF amateur below 10 MHz                 |
- | `CW`         | Continuous wave (Morse), upper sideband                  |
- | `CWR`        | CW, lower sideband                                       |
- | `RTTY`       | Radio teletype                                           |
- | `DSB`        | Double sideband                                          |
- | `RAW`        | Raw IQ passthrough                                       |
+  | Mode         | Description                                              |
+  | ---          | ---                                                      |
+  | `WFM`        | Wide FM — broadcast radio, weather satellites (NOAA APT) |
+  | `FM` / `NFM` | Narrow FM — voice comms                                  |
+  | `AM`         | Amplitude modulation — aviation, HF broadcast            |
+  | `USB`        | Upper sideband — HF amateur, utility                     |
+  | `LSB`        | Lower sideband — HF amateur below 10 MHz                 |
+  | `CW`         | Continuous wave (Morse), upper sideband                  |
+  | `CWR`        | CW, lower sideband                                       |
+  | `RTTY`       | Radio teletype                                           |
+  | `DSB`        | Double sideband                                          |
+  | `RAW`        | Raw IQ passthrough                                       |
 
 ### Cron format
 
