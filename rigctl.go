@@ -134,9 +134,16 @@ func (c *RigCtlClient) GetFrequency() (int64, error) {
 // Requires the RigCtl Server module to have "Recording" enabled and
 // a Recorder module selected as the controlled recorder in SDR++.
 func (c *RigCtlClient) StartRecording() error {
-	c.logger.Println("rigctl: StartRecording (AOS)")
+	c.logger.Println("rigctl: StartPlay")
 	resp, err := c.sendCommand("\\start")
 	c.logger.Printf("wjm: %s", resp)
+	if err != nil {
+		c.logger.Printf("rigctl: \\start response (may be empty): %q err=%v", resp, err)
+	} else {
+		c.logger.Printf("rigctl: \\start response (may be empty): %q", resp)
+	}
+
+	c.logger.Println("rigctl: StartRecording (AOS)")
 	resp, err = c.sendCommand("AOS")
 	if err != nil {
 		// SDR++ may not respond with RPRT to AOS — treat non-fatal
